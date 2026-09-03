@@ -1,0 +1,4 @@
+out/
+uboot-bins
+uboot-bins-*/
+fake_time
