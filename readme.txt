@@ -15,4 +15,12 @@ collect FIP & build u-boot:
 ./collect-m5_binaries-git-refboard.sh android-tv-13.0.0_r1 sm1 sm1_bananapim5_v1
 
 
+# X96 X9 (g12b_w200)
+BL2/BL30/BL31/ACS and DDR firmware were recovered from the stock DDR.USB:
+`gxlimg -t fip -e` to split the FIP, `gxlimg -t bl2 -u` to unsign BL2
+(bl2.bin + acs.bin), bl30.bin/bl301.bin at 0x1000/0xb000 of bl30.enc and
+bl31.img at 0x290 of bl31.enc.
+
+./build_x96x9.sh
+
 scripts originally from https://android.googlesource.com/device/amlogic/yukawa/+/refs/heads/master/bootloader/scripts/
