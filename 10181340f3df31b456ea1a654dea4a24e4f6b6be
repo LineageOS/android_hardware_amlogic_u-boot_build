@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3f56b3b6_0814dd67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19979
+      },
+      "writtenOn": "2026-09-12T10:49:01Z",
+      "side": 1,
+      "message": "https://github.com/Stricted/deadpool_u-boot_build/commit/7e20b3c7320b737b0db88968ea37cdc43b20ca6f",
+      "parentUuid": "ae968703_30051221",
+      "revId": "10181340f3df31b456ea1a654dea4a24e4f6b6be",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "690669b7_c40c45d5",
         "filename": "readme.txt",
         "patchSetId": 6
