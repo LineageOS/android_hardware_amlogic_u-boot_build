@@ -24,3 +24,21 @@ bl31.img at 0x290 of bl31.enc.
 ./build_x96x9.sh
 
 scripts originally from https://android.googlesource.com/device/amlogic/yukawa/+/refs/heads/master/bootloader/scripts/
+
+# Khadas VIM3 (kvim3, g12b/A311D) and VIM3L (kvim3l, g12a/S905D3)
+BL2/BL30/BL31, the DDR firmware and aml_encrypt_g12{a,b} are the blobs
+shipped in Khadas' vim3-bootloader tree (bl2/bin, bl30/bin, bl31_1.3/bin,
+fip/g12{a,b}). bl301.bin and acs.bin were taken from a `./mk kvim3` /
+`./mk kvim3l` build of that tree (fip/_tmp), the same way the other fip
+directories freeze the vendor-built pieces. acs.bin is byte-identical to
+what ../u-boot builds from board/khadas/kvim3{,l}/firmware/timing.c after
+the vendor `parse` step; bl301.bin differs because the vendor scp_task core
+is newer.
+
+fip-kvim3l deliberately has no lpddr3_1d.fw: the Khadas g12a bl30 enters
+bl301 at 0x1000A000 (40K), and generate-bins-new.sh switches to the 46K
+bl30 layout whenever a g12a fip dir contains lpddr3_1d.fw. VIM3L is LPDDR4
+only (timing.c), so the firmware is not needed.
+
+./build_kvim3.sh
+./build_kvim3l.sh
