@@ -21,5 +21,9 @@ if [[ -d "${DEVICE_PATH}" ]]; then
     cd "$DEVICE_PATH" && ./setup-makefiles.py
 fi
 if [[ -d "${VENDOR_PATH}" ]]; then
-    cd "$VENDOR_PATH" && git add -A && git commit -m "m5: Update bootloader image prebuilt"
+    cd "$VENDOR_PATH"
+    SHA_HEAD=$(git -C "${SCRIPT_DIR}/../u-boot" rev-parse HEAD)
+    git add -A
+    git commit -m "radxa0: Update bootloader image prebuilt" \
+               -m "* As of ${SHA_HEAD}
 fi
