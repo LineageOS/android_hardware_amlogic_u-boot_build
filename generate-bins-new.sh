@@ -76,6 +76,15 @@ rm -f "${FAKE_TIME}"
 cc -O2 -o "${FAKE_TIME}" "${SCRIPT_DIR}/fake_time.c"
 # Wrap aml_encrypt so every invocation gets the frozen clock + UTC locale
 aml_encrypt() { TZ=UTC "${FAKE_TIME}" "${SOURCE_DATE_EPOCH:-0}" "${FIPDIR}/aml_encrypt_${SOCFAMILY}" "$@"; }
+# acs_tool merges the board ACS (DDR timing) into bl2 on gxl/axg: a fip dir may
+# ship a Python 3 port (acs_tool.py) instead of Amlogic's Python 2 acs_tool.pyc
+acs_tool() {
+    if [ -e "${FIPDIR}/acs_tool.py" ]; then
+        python3 "${FIPDIR}/acs_tool.py" "$@"
+    else
+        /usr/bin/env python2 "${FIPDIR}/acs_tool.pyc" "$@"
+    fi
+}
 
 TMP=$(mktemp -d)
 
@@ -83,11 +92,13 @@ if [ "$SOCFAMILY" = "gxl" ]
 then
 
     fix_blx ${FIPDIR}/bl30.bin ${TMP}/zero_tmp ${TMP}/bl30_zero.bin ${FIPDIR}/bl301.bin ${TMP}/bl301_zero.bin ${TMP}/bl30_new.bin bl30
-    /usr/bin/env python2 ${FIPDIR}/acs_tool.pyc ${FIPDIR}/bl2.bin ${TMP}/bl2_acs.bin ${FIPDIR}/acs.bin 0
+    acs_tool ${FIPDIR}/bl2.bin ${TMP}/bl2_acs.bin ${FIPDIR}/acs.bin 0
     fix_blx ${TMP}/bl2_acs.bin ${TMP}/zero_tmp ${TMP}/bl2_zero.bin ${FIPDIR}/bl21.bin ${TMP}/bl21_zero.bin ${TMP}/bl2_new.bin bl2
     aml_encrypt --bl3enc --input ${TMP}/bl30_new.bin --output ${TMP}/bl30_new.bin.enc
     aml_encrypt --bl3enc --input ${FIPDIR}/bl31.img --output ${TMP}/bl31.img.enc
-    aml_encrypt --bl3enc --input ${UBOOTBIN} --output ${TMP}/bl33.bin.enc
+    # CONFIG_AML_BL33_COMPRESS_ENABLE is set in arch-gxl/cpu.h, so the
+    # vendor fip/gxl/build.sh always packs bl33 lz4 compressed
+    aml_encrypt --bl3enc --input ${UBOOTBIN} --output ${TMP}/bl33.bin.enc --compress lz4
     aml_encrypt --bl2sig --input ${TMP}/bl2_new.bin --output ${TMP}/bl2.n.bin.sig
     aml_encrypt --bootmk --output ${TMP}/u-boot.bin \
 	     --bl2 ${TMP}/bl2.n.bin.sig \
@@ -98,7 +109,7 @@ then
 elif [ "$SOCFAMILY" = "axg" ]
 then
     fix_blx ${FIPDIR}/bl30.bin ${TMP}/zero_tmp ${TMP}/bl30_zero.bin ${FIPDIR}/bl301.bin ${TMP}/bl301_zero.bin ${TMP}/bl30_new.bin bl30
-    /usr/bin/env python2 ${FIPDIR}/acs_tool.pyc ${FIPDIR}/bl2.bin ${TMP}/bl2_acs.bin ${FIPDIR}/acs.bin 0
+    acs_tool ${FIPDIR}/bl2.bin ${TMP}/bl2_acs.bin ${FIPDIR}/acs.bin 0
     fix_blx ${TMP}/bl2_acs.bin ${TMP}/zero_tmp ${TMP}/bl2_zero.bin ${FIPDIR}/bl21.bin ${TMP}/bl21_zero.bin ${TMP}/bl2_new.bin bl2
     aml_encrypt --bl3sig --input ${TMP}/bl30_new.bin --output ${TMP}/bl30_new.bin.enc --level v3 --type bl30
     aml_encrypt --bl3sig --input ${FIPDIR}/bl31.img --output ${TMP}/bl31.img.enc --level v3 --type bl31
