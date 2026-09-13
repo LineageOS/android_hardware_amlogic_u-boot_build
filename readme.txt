@@ -42,3 +42,14 @@ only (timing.c), so the firmware is not needed.
 
 ./build_kvim3.sh
 ./build_kvim3l.sh
+
+# Khadas VIM (kvim, gxl/S905X)
+BL2/BL30/BL31 and aml_encrypt_gxl are the blobs of Khadas' vim3-bootloader
+tree, branch khadas-vims-pie; bl301.bin, bl21.bin and acs.bin come from a
+`./mk kvim` build of that tree. gxl needs the ACS (DDR timing) merged into
+bl2 by Amlogic's acs_tool.pyc, which is Python 2 bytecode; fip-kvim ships
+acs_tool.py, a Python 3 port of it, and generate-bins-new.sh uses that when
+present. The gxl branch also packs bl33 lz4 compressed now, as the vendor
+fip/gxl/build.sh does (CONFIG_AML_BL33_COMPRESS_ENABLE in arch-gxl/cpu.h).
+
+./build_kvim.sh
