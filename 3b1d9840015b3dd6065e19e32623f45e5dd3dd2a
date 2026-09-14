@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d49826a0_8f706615",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 17162
+      },
+      "writtenOn": "2026-09-14T14:20:51Z",
+      "side": 1,
+      "message": "verified with https://review.lineageos.org/c/LineageOS/android_device_khadas_kvim/+/502678",
+      "revId": "3b1d9840015b3dd6065e19e32623f45e5dd3dd2a",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
