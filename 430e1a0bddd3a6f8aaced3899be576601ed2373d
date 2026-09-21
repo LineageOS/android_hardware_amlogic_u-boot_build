@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64feab44_5bb35aa1",
+        "filename": "build_all.sh",
+        "patchSetId": 9
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 13648
+      },
+      "writtenOn": "2026-09-21T08:08:45Z",
+      "side": 1,
+      "message": "Let\u0027s keep this build_all script for devkits only.",
+      "range": {
+        "startLine": 6,
+        "startChar": 82,
+        "endLine": 6,
+        "endChar": 93
+      },
+      "revId": "430e1a0bddd3a6f8aaced3899be576601ed2373d",
+      "serverId": "1ec6b3db-b2c1-4fa4-84a2-4c7efe89ba71"
+    }
+  ]
+}
